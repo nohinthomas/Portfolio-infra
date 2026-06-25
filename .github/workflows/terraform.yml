@@ -1,0 +1,44 @@
+name: Terraform
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    name: Terraform Plan & Apply
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Init
+        working-directory: ./infra
+        run: terraform init
+
+      - name: Terraform Plan
+        working-directory: ./infra
+        run: terraform plan
+        env:
+          TF_VAR_client_id:       ${{ secrets.ARM_CLIENT_ID }}
+          TF_VAR_client_secret:   ${{ secrets.ARM_CLIENT_SECRET }}
+          TF_VAR_tenant_id:       ${{ secrets.ARM_TENANT_ID }}
+          TF_VAR_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        working-directory: ./infra
+        run: terraform apply -auto-approve
+        env:
+          TF_VAR_client_id:       ${{ secrets.ARM_CLIENT_ID }}
+          TF_VAR_client_secret:   ${{ secrets.ARM_CLIENT_SECRET }}
+          TF_VAR_tenant_id:       ${{ secrets.ARM_TENANT_ID }}
+          TF_VAR_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
