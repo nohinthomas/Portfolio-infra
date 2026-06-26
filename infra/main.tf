@@ -1,8 +1,8 @@
 terraform {
   cloud {
-    organization = "nohin-portfolio"
+    organization = "Nohin"
     workspaces {
-      name = "portfolio-prod"
+      name = "Portfolio-prod"
     }
   }
 
