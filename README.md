@@ -102,5 +102,5 @@ Add as `AZURE_STATIC_WEB_APPS_API_TOKEN` in the nohin-portfolio repo.
 
 ## Notes
 - Terraform state is stored remotely in Terraform Cloud — never in this repo
-- No credentials are stored in code — all via GitHub Secrets
+- No credentials are stored in code — all via GitHub Secrets.
 - The existing resource group `rg-nohin-portfolio` is referenced, not recreated
